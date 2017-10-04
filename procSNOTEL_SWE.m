@@ -139,10 +139,10 @@ for istate = 1:length(states)
         text(2001,max(SWEmax(:,istate)),sprintf('n = %d ',length(SWEsum(1,:))))
     
     % Rank statewide snow days, lowest to highest
-    [rank, irank] = sort(SWEsum(:,istate));
+    [rank, irank] = sort(State_SWEsum(:,istate));
     State_SWEsum_Rankings(:,istate) = yrs2(irank);
     
-    [rank, irank] = sort(SWEmax(:,istate));
+    [rank, irank] = sort(State_SWEmax(:,istate));
     State_SWEmax_Rankings(:,istate) = yrs2(irank);
     
     % Clean up
