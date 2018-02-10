@@ -10,15 +10,15 @@ https://wcc.sc.egov.usda.gov/nwcc/inventory
 - save the inventory file as SNOTEL_Inventory_wHeaders.csv
 
 (2) importSNOTEL_inv.m
-- loads the snotel inventory file, SNOTEL_Inventory_wHeaders.csv
+- imports the snotel inventory file, SNOTEL_Inventory_wHeaders.csv
 - this script is used in the loadSNOTEL.m script below, it is not meant to run stand-alone
 
 (3) readSNOTEL.m
-- loads the snotel individual station data, "snotel_XXXX.csv", where XXXX is the station number
+- reads the snotel individual station data, "snotel_XXXX.csv", where XXXX is the station number
 - this script is used in the loadSNOTEL.m script below, it is not meant to run stand-alone
 
 (4) loadSNOTEL.m
-- saves snotel station data in state-level .mat files
+- loads snotel station data and saves in state-level .mat files
 
 (5) procSNOTEL_SWE.m
 - calculates percent missing data per winter
