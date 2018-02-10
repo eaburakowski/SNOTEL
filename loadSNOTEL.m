@@ -10,6 +10,9 @@
 %   SNOTEL_Inventory_wheaders.mat (pull from SNOTEL website:
 %   https://wcc.sc.egov.usda.gov/nwcc/yearcount?network=sntl&counttype=statelist&state=
 %   - this file is a list of stations based on user-defined attributes.
+%  
+%   importSNOTEL_inv.m
+%   - this script imports the metadata file (SNOTEL_Inventory)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -55,7 +58,6 @@ for i = 1:length(fils)
 end
 
 % Loop over states and SNOTEL sites
-% Calculate missing data
 for istate = 1:length(states)
     stations_ind = strmatch(states(istate),SNOTEL_state);
     
