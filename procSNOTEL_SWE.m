@@ -4,24 +4,21 @@
 % 2017-10-02
 % elizabeth.burakowski@gmail.com
 %
-% procSNOTEL_SWE.m loads state-level .mat files created using procSNOTEL.m,
+% procSNOTEL_SWE.m loads state-level .mat files created using loadSNOTEL.m,
 % which contain SNOTEL daily SWE data (in mm), 2000-2016.
 % The script does the following:
 %   - calculates percent missing data per winter
 %   - removes years missing >25% of daily records
-%   - removes stations missing > 2 years of data
-%   - converts SWE (mm) to snow depth (mm), assuming snow density = 0.35,
-%   or the maximum end of range for snow in western US, using the following
-%   equation: SWE/density = depth
-%   - sums the number of days per winter (December through March) with snow
-%   depth greater than a user-defined threshold, snwd_thresh (>3" recommended)  
-%   - calculates the state average # of snow days per winter
-%   - ranks the winters from highest to lowest number of snow covered days
+%   - removes stations missing > 2 years of data 
+%   - calculates station total SWE (integrated under season curve; SWEsum) for each year
+%   - calculates station maximum SWE (SWEmax) for each year
+%   - calculates the state average total SWEsum for each year
+%   - calculates the state average maximum SWE (SWEmax) for each year
+%   - ranks the winters from highest to lowest based on SWEsum and SWEmax
 
 %
 % Requires:
 %   - state-level .mat files of SNOTEL SWE data
-%   - snwd_thresh, value in mm for which day is considered snow-covered
 %   - data_thresh, threshold of daily missing values per winter
 %   - yr_thresh, threshold of missing years in time series.
 %
@@ -78,7 +75,7 @@ for istate = 1:length(states)
         year = date(:,1);
         month = date(:,2);
         
-        % Loop over years, pull out one winter of SWE data
+        % Loop over years, pull out one winter (Nov-Apr) of SWE data
         for iyr = 1:length(yrsrt:yrend)-1
             onewinter = SWE(find(year==years(iyr)&month>=11|year==years(iyr+1)&month<=4));
             if (length(find(isnan(onewinter)))/length(onewinter))<data_thresh
@@ -131,17 +128,18 @@ for istate = 1:length(states)
         p = plotyy(yrs2,State_SWEsum(:,istate),yrs2,State_SWEmax(:,istate))
     
         % plot options
-        xlabel('Year Dec-Mar')
+        xlabel('Year Nov-Apr')
         ylabel(p(1),'SWE total (m)')
         ylabel(p(2),'SWE max (m)')
         title(states(istate,:));
         legend('SWEsum','SWEmax','Location','NorthEast')
         text(2001,max(SWEmax(:,istate)),sprintf('n = %d ',length(SWEsum(1,:))))
     
-    % Rank statewide snow days, lowest to highest
+    % Rank statewide SWEsum, lowest to highest
     [rank, irank] = sort(State_SWEsum(:,istate));
     State_SWEsum_Rankings(:,istate) = yrs2(irank);
     
+    % Rank statewide SWEmax, lowest to highest, * used in final analysis *
     [rank, irank] = sort(State_SWEmax(:,istate));
     State_SWEmax_Rankings(:,istate) = yrs2(irank);
     
